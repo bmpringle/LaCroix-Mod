@@ -1,0 +1,23 @@
+{
+    "display": {
+        "icon": {
+            "item": "lacroix:coalheater"
+        },
+        "title": "La Croix!",
+        "description": "Obtain a coal heater to produce steam",
+        "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+    },
+    "criteria": {
+        "soda": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "lacroix:coalheater"
+                    }
+                ]
+            }
+        }
+    }
+}
+

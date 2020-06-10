@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "lacroix:blocks/excellent/chtopclosedhatch",
+        "up": "lacroix:blocks/excellent/chtopclosedhatch",
+        "down": "lacroix:blocks/excellent/chbottom",
+        "north": "lacroix:blocks/excellent/chfront",
+        "south": "lacroix:blocks/excellent/chside",
+        "east": "lacroix:blocks/excellent/chside",
+        "west": "lacroix:blocks/excellent/chside"
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "display": {
+        "icon": {
+            "item": "lacroix:purelacroix"
+        },
+        "title": "Healthier Than Soda!",
+        "description": "Obtain a can of Pure La Croix"
+    },
+    "parent" : "lacroix:lacroixadvancementsroot",
+    "criteria": {
+        "soda": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "lacroix:purelacroix"
+                    }
+                ]
+            }
+        }
+    }
+}
