@@ -80,7 +80,27 @@ public class BlockHeater extends Block {
 	
 	@Override
 	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-		return super.getActualState(state, worldIn, pos);
+		int texture = 0;
+		if(worldIn.getTileEntity(pos) instanceof TileEntityHeater) {
+			switch(((TileEntityHeater)worldIn.getTileEntity(pos)).level) {
+			case Basic:
+				texture = 0;
+				break;
+			case Advanced:
+				texture = 1;
+				break;
+			case Excellent:
+				texture = 2;
+				break;
+			case Perfect:
+				texture = 3;
+				break;
+			default:
+				break;
+			
+			}
+		}
+		return state.withProperty(TEXTURE, texture).withProperty(OPENHATCH, !((TileEntityHeater)worldIn.getTileEntity(pos)).captureSteam);
 	}
 	
 	@Override
@@ -131,7 +151,6 @@ public class BlockHeater extends Block {
     @Override
     public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack tool) {
         super.harvestBlock(world, player, pos, state, te, tool);
-        System.out.println(world.isRemote);
         world.setBlockToAir(pos);
     }
 	

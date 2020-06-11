@@ -6,6 +6,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
@@ -19,6 +21,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.whatamidoingstudios.lacroix.LaCroix;
 import net.whatamidoingstudios.lacroix.network.HeaterMessageClient;
 import net.whatamidoingstudios.lacroix.network.ProgressBar;
+import net.whatamidoingstudios.lacroix.network.TextureIntMessage;
 
 public class TileEntityHeater extends TileEntityUpgradeable implements ITickable {
 
@@ -38,10 +41,11 @@ public class TileEntityHeater extends TileEntityUpgradeable implements ITickable
 	private boolean isBurning = false;
 	private int steamPerSecond = 1;
 	
+	private boolean wasCaptureSteam = true;
 	public boolean captureSteam = true;
 	public int steamMaxStorage = 500;
 	
-	private void save() {
+	public void save() {
 		world.markBlockRangeForRenderUpdate(pos, pos);
 		world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
 		world.scheduleBlockUpdate(pos, this.getBlockType(), 0, 0);
@@ -103,10 +107,8 @@ public class TileEntityHeater extends TileEntityUpgradeable implements ITickable
 				isBurning = true;
 			}
 			LaCroix.networkHandler.channel.sendToDimension(new ProgressBar(steam, pos, steamMaxStorage, level.toString()), world.provider.getDimension());
-			this.world.setBlockState(pos, this.world.getBlockState(pos).withProperty(BlockHeater.TEXTURE, currentLevel));
-			this.world.setBlockState(pos, this.world.getBlockState(pos).withProperty(BlockHeater.OPENHATCH, !captureSteam));
-			save();
 		}
+		save();
 	}
 	
 	@Override
@@ -147,7 +149,7 @@ public class TileEntityHeater extends TileEntityUpgradeable implements ITickable
 		currentBurnInTicks = compound.getInteger("currentBurnInTicks");
 		isBurning = compound.getBoolean("isBurning");
 		captureSteam = compound.getBoolean("captureSteam");
-		level = EnumUpgrades.valueOf(compound.getString("level"));
+		level = EnumUpgrades.safeValueOf(compound.getString("level"));
 
 		super.readFromNBT(compound);
 	}
@@ -163,4 +165,34 @@ public class TileEntityHeater extends TileEntityUpgradeable implements ITickable
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T)inventory : super.getCapability(capability, facing);
 	}
 
+	@Override
+	@Nullable
+	public SPacketUpdateTileEntity getUpdatePacket() {
+		return new SPacketUpdateTileEntity(this.pos, 3, this.getUpdateTag());
+	}
+
+	@Override
+	public NBTTagCompound getUpdateTag() {
+		return this.writeToNBT(new NBTTagCompound());
+	}
+	
+	@Override
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+		super.onDataPacket(net, pkt);
+		handleUpdateTag(pkt.getNbtCompound());
+	}
+	
+	public void setCaptureSteam(boolean cap) {
+		captureSteam = cap;
+		save();
+	}
+	
+	@Override
+	public boolean upgrade(EnumUpgrades upgrade) {
+		if(super.upgrade(upgrade)) {
+			save();
+			return true;
+		}
+		return false;
+	}
 }

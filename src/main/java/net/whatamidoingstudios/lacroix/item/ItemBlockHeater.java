@@ -3,34 +3,27 @@ package net.whatamidoingstudios.lacroix.item;
 import java.util.List;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.whatamidoingstudios.lacroix.LaCroix;
 import net.whatamidoingstudios.lacroix.ModObjects;
 import net.whatamidoingstudios.lacroix.block.heater.BlockHeater;
@@ -69,6 +62,40 @@ public class ItemBlockHeater extends ItemBlock {
         }
     }
 	
+	@SideOnly(Side.CLIENT)
+	public void initModels() {
+		ModelResourceLocation basicModel = new ModelResourceLocation(new ResourceLocation(LaCroix.MODID, "blocks/basic/coalheater"), "inventory");
+        ModelResourceLocation advancedModel = new ModelResourceLocation(new ResourceLocation(LaCroix.MODID, "blocks/advanced/coalheater"), "inventory");
+        ModelResourceLocation excellentModel = new ModelResourceLocation(new ResourceLocation(LaCroix.MODID, "blocks/excellent/coalheater"), "inventory");
+        ModelResourceLocation perfectModel = new ModelResourceLocation(new ResourceLocation(LaCroix.MODID, "blocks/perfect/coalheater"), "inventory");
+
+        ModelBakery.registerItemVariants(this, basicModel, advancedModel, excellentModel, perfectModel);
+
+        ModelLoader.setCustomMeshDefinition(this, new ItemMeshDefinition() {
+            @Override
+            public ModelResourceLocation getModelLocation(ItemStack stack) {
+            	if(stack.getTagCompound() == null) return basicModel;
+            	if(stack.getTagCompound().getString("level") == "") return basicModel;
+            	
+                switch(EnumUpgrades.safeValueOf(stack.getTagCompound().getString("level"))) {
+                case Basic:
+                	return basicModel;
+                case Advanced:
+                	return advancedModel;
+				case Excellent:
+					return excellentModel;
+				case Perfect:
+					return perfectModel;
+				default:
+					System.out.println("LEVEL IS NOT IN ITEMSTACK NBT. THIS WILL NOT CAUSE A CRASH, \n "
+							+ "BUT INDICATES SOMETHING IS VERY VERY WRONG. GET IN CONTACT WITH MOD AUTHOR ABOUT THIS.");
+					return basicModel;
+                }
+            }
+        });
+	}
+	
+	@SideOnly(Side.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
@@ -90,7 +117,7 @@ public class ItemBlockHeater extends ItemBlock {
             setTileEntityNBT(world, player, pos, stack);
             TileEntity te = world.getTileEntity(pos);
             if(te != null && te instanceof TileEntityHeater) {
-            	((TileEntityHeater)te).level = EnumUpgrades.valueOf(stack.getTagCompound().getString("level"));
+            	((TileEntityHeater)te).level = EnumUpgrades.safeValueOf(stack.getTagCompound().getString("level"));
             	((TileEntityHeater)te).steam = stack.getTagCompound().getInteger("steam");
             }
             this.block.onBlockPlacedBy(world, pos, state, player, stack);

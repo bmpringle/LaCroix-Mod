@@ -202,7 +202,6 @@ public class LaCroix {
 		ModelLoader.setCustomModelResourceLocation(ModObjects.advancedupgrade, 0, new ModelResourceLocation(ModObjects.advancedupgrade.getRegistryName(), "inventory"));
 		ModelLoader.setCustomModelResourceLocation(ModObjects.excellentupgrade, 0, new ModelResourceLocation(ModObjects.excellentupgrade.getRegistryName(), "inventory"));
 		ModelLoader.setCustomModelResourceLocation(ModObjects.perfectupgrade, 0, new ModelResourceLocation(ModObjects.perfectupgrade.getRegistryName(), "inventory"));
-		
-		ModelLoader.setCustomModelResourceLocation(ModObjects.itemblock_coalheater, 0, new ModelResourceLocation(ModObjects.itemblock_coalheater.getRegistryName(), "inventory"));
+		ModObjects.itemblock_coalheater.initModels();
 	}
 }

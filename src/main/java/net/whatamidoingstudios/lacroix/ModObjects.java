@@ -1,89 +1,93 @@
 package net.whatamidoingstudios.lacroix;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
+import net.whatamidoingstudios.lacroix.block.heater.BlockHeater;
+import net.whatamidoingstudios.lacroix.item.ItemAdvancedUpgrade;
+import net.whatamidoingstudios.lacroix.item.ItemBlockHeater;
+import net.whatamidoingstudios.lacroix.item.ItemExcellentUpgrade;
+import net.whatamidoingstudios.lacroix.item.ItemLaCroixDrink;
+import net.whatamidoingstudios.lacroix.item.ItemPerfectUpgrade;
 
 @ObjectHolder("lacroix")
 public class ModObjects {
 	@ObjectHolder("applecranberrylacroix")
-	public static final Item applecranberrylacroix = null;
+	public static final ItemLaCroixDrink applecranberrylacroix = null;
 	
 	@ObjectHolder("apricotlacroix")
-	public static final Item apricotlacroix = null;
+	public static final ItemLaCroixDrink apricotlacroix = null;
 
 	@ObjectHolder("coconutlacroix")
-	public static final Item coconutlacroix = null;
+	public static final ItemLaCroixDrink coconutlacroix = null;
 	
 	@ObjectHolder("peachpearlacroix")
-	public static final Item peachpearlacroix = null;
+	public static final ItemLaCroixDrink peachpearlacroix = null;
 	
 	@ObjectHolder("pineapplelacroix")
-	public static final Item pineapplelacroix = null;
+	public static final ItemLaCroixDrink pineapplelacroix = null;
 	
 	@ObjectHolder("tangerinelacroix")
-	public static final Item tangerinelacroix = null;
+	public static final ItemLaCroixDrink tangerinelacroix = null;
 	
 	@ObjectHolder("cherrylimelacroix")
-	public static final Item cherrylimelacroix = null;
+	public static final ItemLaCroixDrink cherrylimelacroix = null;
 	
 	@ObjectHolder("limelacroix")
-	public static final Item limelacroix = null;
+	public static final ItemLaCroixDrink limelacroix = null;
 	
 	@ObjectHolder("keylimelacroix")
-	public static final Item keylimelacroix = null;
+	public static final ItemLaCroixDrink keylimelacroix = null;
 	
 	@ObjectHolder("berrylacroix")
-	public static final Item berrylacroix = null;
+	public static final ItemLaCroixDrink berrylacroix = null;
 	
 	@ObjectHolder("cranberryraspberrylacroix")
-	public static final Item cranberryraspberrylacroix = null;
+	public static final ItemLaCroixDrink cranberryraspberrylacroix = null;
 	
 	@ObjectHolder("orangelacroix")
-	public static final Item orangelacroix = null;
+	public static final ItemLaCroixDrink orangelacroix = null;
 	
 	@ObjectHolder("blackberrycucumberlacroix")
-	public static final Item blackberrycucumberlacroix = null;
+	public static final ItemLaCroixDrink blackberrycucumberlacroix = null;
 	
 	@ObjectHolder("purelacroix")
-	public static final Item purelacroix = null;
+	public static final ItemLaCroixDrink purelacroix = null;
 	
 	@ObjectHolder("lacolalacroix")
-	public static final Item lacolalacroix = null;
+	public static final ItemLaCroixDrink lacolalacroix = null;
 	
 	@ObjectHolder("passionfruitlacroix")
-	public static final Item passionfruitlacroix = null;
+	public static final ItemLaCroixDrink passionfruitlacroix = null;
 	
 	@ObjectHolder("pamplemousselacroix")
-	public static final Item pamplemousselacroix = null;
+	public static final ItemLaCroixDrink pamplemousselacroix = null;
 	
 	@ObjectHolder("mangolacroix")
-	public static final Item mangolacroix = null;
+	public static final ItemLaCroixDrink mangolacroix = null;
 	
 	@ObjectHolder("melongrapefruitlacroix")
-	public static final Item melongrapefruitlacroix = null;
+	public static final ItemLaCroixDrink melongrapefruitlacroix = null;
 	
 	@ObjectHolder("strawberrylacroix")
-	public static final Item strawberrylacroix = null;
+	public static final ItemLaCroixDrink strawberrylacroix = null;
 	
 	@ObjectHolder("kiwiwatermelonlacroix")
-	public static final Item kiwiwatermelonlacroix = null;
+	public static final ItemLaCroixDrink kiwiwatermelonlacroix = null;
 	
 	@ObjectHolder("lemonlacroix")
-	public static final Item lemonlacroix = null;
+	public static final ItemLaCroixDrink lemonlacroix = null;
 	
 	@ObjectHolder("advancedupgrade")
-	public static final Item advancedupgrade = null;
+	public static final ItemAdvancedUpgrade advancedupgrade = null;
 	
 	@ObjectHolder("excellentupgrade")
-	public static final Item excellentupgrade = null;
+	public static final ItemExcellentUpgrade excellentupgrade = null;
 	
 	@ObjectHolder("perfectupgrade")
-	public static final Item perfectupgrade = null;
+	public static final ItemPerfectUpgrade perfectupgrade = null;
 	
 	@ObjectHolder("coalheater")
-	public static final Item itemblock_coalheater = null;
+	public static final ItemBlockHeater itemblock_coalheater = null;
 	
 	@ObjectHolder("coalheater")
-	public static final Block coalheater = null;
+	public static final BlockHeater coalheater = null;
 }

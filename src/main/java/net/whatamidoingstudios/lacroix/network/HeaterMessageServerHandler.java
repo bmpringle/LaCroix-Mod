@@ -15,7 +15,7 @@ public class HeaterMessageServerHandler implements IMessageHandler<HeaterMessage
 		if(message.s == '0') {
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
 			if(ctx.getServerHandler().player.world.getTileEntity(pos) instanceof TileEntityHeater) {
-				((TileEntityHeater)ctx.getServerHandler().player.world.getTileEntity(pos)).captureSteam = message.cap;
+				((TileEntityHeater)ctx.getServerHandler().player.world.getTileEntity(pos)).setCaptureSteam(message.cap);
 			}
 			return null;
 		}else {

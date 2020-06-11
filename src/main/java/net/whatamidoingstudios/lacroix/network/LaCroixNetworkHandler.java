@@ -15,5 +15,6 @@ public class LaCroixNetworkHandler {
 		channel.registerMessage(HeaterMessageClientHandler.class, HeaterMessageClient.class, 1, Side.CLIENT);
 		channel.registerMessage(HeaterMessageServerResponseHandler.class, HeaterMessageServerResponse.class, 2, Side.CLIENT);
 		channel.registerMessage(ProgressBarHandler.class, ProgressBar.class, 3, Side.CLIENT);
+		channel.registerMessage(TextureIntMessageBlockHeaterHandler.class, TextureIntMessage.class, 4, Side.CLIENT);
 	}
 }
