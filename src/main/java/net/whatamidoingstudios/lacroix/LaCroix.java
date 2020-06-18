@@ -19,8 +19,9 @@ package net.whatamidoingstudios.lacroix;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
@@ -28,10 +29,6 @@ import net.minecraftforge.advancements.critereon.ItemPredicates;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -40,42 +37,45 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.whatamidoingstudios.lacroix.advancements.HealtierThanSodaPredicate;
-import net.whatamidoingstudios.lacroix.block.LaCroixGuiHandler;
 import net.whatamidoingstudios.lacroix.block.heater.BlockHeater;
 import net.whatamidoingstudios.lacroix.block.heater.TileEntityHeater;
-import net.whatamidoingstudios.lacroix.item.ItemAdvancedUpgrade;
-import net.whatamidoingstudios.lacroix.item.ItemAppleCranberryLaCroix;
-import net.whatamidoingstudios.lacroix.item.ItemApricotLaCroix;
-import net.whatamidoingstudios.lacroix.item.ItemBerryLaCroix;
-import net.whatamidoingstudios.lacroix.item.ItemBlackberryCucumberLaCroix;
-import net.whatamidoingstudios.lacroix.item.ItemBlockHeater;
-import net.whatamidoingstudios.lacroix.item.ItemCherryLimeLaCroix;
-import net.whatamidoingstudios.lacroix.item.ItemCoconutLaCroix;
-import net.whatamidoingstudios.lacroix.item.ItemCranberryRaspberryLaCroix;
-import net.whatamidoingstudios.lacroix.item.ItemExcellentUpgrade;
-import net.whatamidoingstudios.lacroix.item.ItemKeylimeLaCroix;
-import net.whatamidoingstudios.lacroix.item.ItemKiwiWatermelonLaCroix;
-import net.whatamidoingstudios.lacroix.item.ItemLaColaLaCroix;
-import net.whatamidoingstudios.lacroix.item.ItemLemonLaCroix;
-import net.whatamidoingstudios.lacroix.item.ItemLimeLaCroix;
-import net.whatamidoingstudios.lacroix.item.ItemMangoLaCroix;
-import net.whatamidoingstudios.lacroix.item.ItemMelonGrapefruitLaCroix;
-import net.whatamidoingstudios.lacroix.item.ItemOrangeLaCroix;
-import net.whatamidoingstudios.lacroix.item.ItemPamplemousseLaCroix;
-import net.whatamidoingstudios.lacroix.item.ItemPassionfruitLaCroix;
-import net.whatamidoingstudios.lacroix.item.ItemPeachPearLaCroix;
-import net.whatamidoingstudios.lacroix.item.ItemPerfectUpgrade;
-import net.whatamidoingstudios.lacroix.item.ItemPineappleLaCroix;
-import net.whatamidoingstudios.lacroix.item.ItemPureLaCroix;
-import net.whatamidoingstudios.lacroix.item.ItemStrawberryLaCroix;
-import net.whatamidoingstudios.lacroix.item.ItemTangerineLaCroix;
+import net.whatamidoingstudios.lacroix.block.pipes.BlockSteamPipe;
+import net.whatamidoingstudios.lacroix.block.steamturbine.BlockSteamTurbine;
+import net.whatamidoingstudios.lacroix.block.steamturbine.TileEntityTurbine;
+import net.whatamidoingstudios.lacroix.gui.LaCroixGuiHandler;
+import net.whatamidoingstudios.lacroix.item.food.ItemAppleCranberryLaCroix;
+import net.whatamidoingstudios.lacroix.item.food.ItemApricotLaCroix;
+import net.whatamidoingstudios.lacroix.item.food.ItemBerryLaCroix;
+import net.whatamidoingstudios.lacroix.item.food.ItemBlackberryCucumberLaCroix;
+import net.whatamidoingstudios.lacroix.item.food.ItemCherryLimeLaCroix;
+import net.whatamidoingstudios.lacroix.item.food.ItemCoconutLaCroix;
+import net.whatamidoingstudios.lacroix.item.food.ItemCranberryRaspberryLaCroix;
+import net.whatamidoingstudios.lacroix.item.food.ItemKeylimeLaCroix;
+import net.whatamidoingstudios.lacroix.item.food.ItemKiwiWatermelonLaCroix;
+import net.whatamidoingstudios.lacroix.item.food.ItemLaColaLaCroix;
+import net.whatamidoingstudios.lacroix.item.food.ItemLemonLaCroix;
+import net.whatamidoingstudios.lacroix.item.food.ItemLimeLaCroix;
+import net.whatamidoingstudios.lacroix.item.food.ItemMangoLaCroix;
+import net.whatamidoingstudios.lacroix.item.food.ItemMelonGrapefruitLaCroix;
+import net.whatamidoingstudios.lacroix.item.food.ItemOrangeLaCroix;
+import net.whatamidoingstudios.lacroix.item.food.ItemPamplemousseLaCroix;
+import net.whatamidoingstudios.lacroix.item.food.ItemPassionfruitLaCroix;
+import net.whatamidoingstudios.lacroix.item.food.ItemPeachPearLaCroix;
+import net.whatamidoingstudios.lacroix.item.food.ItemPineappleLaCroix;
+import net.whatamidoingstudios.lacroix.item.food.ItemPureLaCroix;
+import net.whatamidoingstudios.lacroix.item.food.ItemStrawberryLaCroix;
+import net.whatamidoingstudios.lacroix.item.food.ItemTangerineLaCroix;
+import net.whatamidoingstudios.lacroix.item.itemblocks.ItemBlockHeater;
+import net.whatamidoingstudios.lacroix.item.itemblocks.ItemBlockSteamTurbine;
+import net.whatamidoingstudios.lacroix.item.upgrades.ItemAdvancedUpgrade;
+import net.whatamidoingstudios.lacroix.item.upgrades.ItemExcellentUpgrade;
+import net.whatamidoingstudios.lacroix.item.upgrades.ItemPerfectUpgrade;
 import net.whatamidoingstudios.lacroix.network.LaCroixNetworkHandler;
 
 @Mod(modid = LaCroix.MODID, version = LaCroix.VERSION)
@@ -117,9 +117,12 @@ public class LaCroix {
 	@SubscribeEvent
 	public void registerBlocks(RegistryEvent.Register<Block> event) {
 		event.getRegistry().registerAll(
-				new BlockHeater()
+				new BlockHeater(),
+				new BlockSteamTurbine(),
+				new BlockSteamPipe()
 		);
 		GameRegistry.registerTileEntity(TileEntityHeater.class, "lacroix:heatertileentity");
+		GameRegistry.registerTileEntity(TileEntityTurbine.class, "lacroix:steamturbinetileentity");
 	}
 
 	@SubscribeEvent
@@ -150,7 +153,9 @@ public class LaCroix {
 			new ItemAdvancedUpgrade(),
 			new ItemExcellentUpgrade(),
 			new ItemPerfectUpgrade(),
-			new ItemBlockHeater()
+			new ItemBlockHeater(),
+			new ItemBlockSteamTurbine(),
+			new ItemBlock(ModObjects.steampipe).setRegistryName(MODID, "steampipe").setUnlocalizedName("steampipe").setCreativeTab(CreativeTabs.MISC)
 		);
 	}
 	
@@ -202,6 +207,9 @@ public class LaCroix {
 		ModelLoader.setCustomModelResourceLocation(ModObjects.advancedupgrade, 0, new ModelResourceLocation(ModObjects.advancedupgrade.getRegistryName(), "inventory"));
 		ModelLoader.setCustomModelResourceLocation(ModObjects.excellentupgrade, 0, new ModelResourceLocation(ModObjects.excellentupgrade.getRegistryName(), "inventory"));
 		ModelLoader.setCustomModelResourceLocation(ModObjects.perfectupgrade, 0, new ModelResourceLocation(ModObjects.perfectupgrade.getRegistryName(), "inventory"));
+		
+		ModelLoader.setCustomModelResourceLocation(ModObjects.itemblock_steampipe, 0, new ModelResourceLocation("lacroix:blocks/pipes/steampipe", "inventory"));
 		ModObjects.itemblock_coalheater.initModels();
+		ModObjects.itemblock_steamturbine.initModels();
 	}
 }

@@ -34,12 +34,10 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.whatamidoingstudios.lacroix.LaCroix;
 import net.whatamidoingstudios.lacroix.ModObjects;
-import net.whatamidoingstudios.lacroix.block.LaCroixGuiHandler;
+import net.whatamidoingstudios.lacroix.block.EnumUpgrades;
+import net.whatamidoingstudios.lacroix.gui.LaCroixGuiHandler;
 
 public class BlockHeater extends Block {
-
-	@GameRegistry.ObjectHolder("lacroix:coalheater")
-	public static BlockHeater blockHeater = null;
 	
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	public static final PropertyBool OPENHATCH = PropertyBool.create("openhatch");
@@ -141,7 +139,7 @@ public class BlockHeater extends Block {
     		tag.setInteger("steam", te.steam);
     		heaterBlock.setTagCompound(tag);
     		heaterBlock.clearCustomName();
-    		String name = "§f" + heaterBlock.getTagCompound().getString("level") + " " + heaterBlock.getDisplayName();
+    		String name = EnumUpgrades.colorOf(heaterBlock.getTagCompound().getString("level") + " " + heaterBlock.getDisplayName(), te.level);
     		heaterBlock.setStackDisplayName(name);
         	drops.add(heaterBlock);
         	drops.add(te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH).getStackInSlot(0)); 	

@@ -1,29 +1,32 @@
 package net.whatamidoingstudios.lacroix.block.heater;
 
+import java.util.ArrayList;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.whatamidoingstudios.lacroix.LaCroix;
-import net.whatamidoingstudios.lacroix.network.HeaterMessageClient;
-import net.whatamidoingstudios.lacroix.network.ProgressBar;
-import net.whatamidoingstudios.lacroix.network.TextureIntMessage;
+import net.whatamidoingstudios.lacroix.block.EnumUpgrades;
+import net.whatamidoingstudios.lacroix.block.ISteam;
+import net.whatamidoingstudios.lacroix.block.ISteamConsumer;
+import net.whatamidoingstudios.lacroix.block.ISteamProvider;
+import net.whatamidoingstudios.lacroix.block.TileEntityUpgradeable;
+import net.whatamidoingstudios.lacroix.block.pipes.BlockSteamPipe;
+import net.whatamidoingstudios.lacroix.network.heater.HeaterMessageClient;
+import net.whatamidoingstudios.lacroix.network.heater.ProgressBar;
 
-public class TileEntityHeater extends TileEntityUpgradeable implements ITickable {
+public class TileEntityHeater extends TileEntityUpgradeable implements ITickable, ISteamProvider {
 
 	private ItemStackHandler inventory = new ItemStackHandler(1) {
 		@Override
@@ -34,16 +37,13 @@ public class TileEntityHeater extends TileEntityUpgradeable implements ITickable
 	};
 	
 	public int steam = 0;
-	private int burnInSeconds = 10;
-	private int burnInTicks = burnInSeconds * 20;
-	private int currentBurnInTicks = 0;
-	private int currentReleaseInTicks = 0;
+	private int burnInTicks = 200;
 	private boolean isBurning = false;
 	private int steamPerSecond = 1;
+	private int burnProgress = 0;
 	
-	private boolean wasCaptureSteam = true;
 	public boolean captureSteam = true;
-	public int steamMaxStorage = 500;
+	public int steamMaxStorage = 10000;
 	
 	public void save() {
 		world.markBlockRangeForRenderUpdate(pos, pos);
@@ -59,23 +59,23 @@ public class TileEntityHeater extends TileEntityUpgradeable implements ITickable
 			
 			switch(level) {
 			case Basic:
-				steamMaxStorage = 500;
-				steamPerSecond = 1;
+				steamMaxStorage = 10000;
+				steamPerSecond = 20;
 				currentLevel = 0;
 				break;
 			case Advanced:
-				steamMaxStorage = 1000;
-				steamPerSecond = 2;
+				steamMaxStorage = 20000;
+				steamPerSecond = 40;
 				currentLevel = 1;
 				break;
 			case Excellent:
-				steamMaxStorage = 2000;
-				steamPerSecond = 4;
+				steamMaxStorage = 40000;
+				steamPerSecond = 80;
 				currentLevel = 2;
 				break;
 			case Perfect:
-				steamMaxStorage = 4000;
-				steamPerSecond = 8;
+				steamMaxStorage = 80000;
+				steamPerSecond = 160;
 				currentLevel = 3;
 				break;
 			default:
@@ -83,19 +83,12 @@ public class TileEntityHeater extends TileEntityUpgradeable implements ITickable
 			
 			}
 			
-			if(currentBurnInTicks != burnInTicks && isBurning) {
-				++currentBurnInTicks;
-				handleBurningTick();
-			}else {
-				currentBurnInTicks = 0;
+			if(isBurning && burnProgress>=burnInTicks) {
 				isBurning = false;
-			}
-			
-			if(currentReleaseInTicks != burnInTicks && !captureSteam) {
-				++currentReleaseInTicks;
-				handleBurningTick();
-			}else {
-				currentReleaseInTicks = 0;
+				burnProgress = 0;
+				
+			}else if(isBurning) {
+				++burnProgress;
 			}
 			
 			if(steam > steamMaxStorage) {
@@ -107,6 +100,14 @@ public class TileEntityHeater extends TileEntityUpgradeable implements ITickable
 				isBurning = true;
 			}
 			LaCroix.networkHandler.channel.sendToDimension(new ProgressBar(steam, pos, steamMaxStorage, level.toString()), world.provider.getDimension());
+			
+			if(isBurning) {
+				steam = steam+steamPerSecond/20;
+			}
+			if(!captureSteam && steam > 0) {
+				LaCroix.networkHandler.channel.sendToDimension(new HeaterMessageClient(pos), world.provider.getDimension());
+				pushSteam();
+			}
 		}
 		save();
 	}
@@ -120,21 +121,11 @@ public class TileEntityHeater extends TileEntityUpgradeable implements ITickable
 		}
 	}
 	
-	private void handleBurningTick() {
-		if(currentBurnInTicks % 20 == 0 && steam < steamMaxStorage && isBurning) {
-			steam = steam + steamPerSecond;
-		}
-		if(currentReleaseInTicks % 20 == 0 && steam > 0 && !captureSteam) {
-			--steam;
-			LaCroix.networkHandler.channel.sendToDimension(new HeaterMessageClient(pos), world.provider.getDimension());
-		}
-	}
-	
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setTag("inventory", inventory.serializeNBT());
 		compound.setInteger("steam", steam);
-		compound.setInteger("currentBurnInTicks", currentBurnInTicks);
+		compound.setInteger("burnInTicks", burnInTicks);
 		compound.setBoolean("isBurning", isBurning);
 		compound.setBoolean("captureSteam", captureSteam);
 		compound.setString("level", level.toString());
@@ -146,7 +137,7 @@ public class TileEntityHeater extends TileEntityUpgradeable implements ITickable
 	public void readFromNBT(NBTTagCompound compound) {
 		inventory.deserializeNBT(compound.getCompoundTag("inventory"));
 		steam = compound.getInteger("steam");
-		currentBurnInTicks = compound.getInteger("currentBurnInTicks");
+		burnInTicks = compound.getInteger("burnInTicks");
 		isBurning = compound.getBoolean("isBurning");
 		captureSteam = compound.getBoolean("captureSteam");
 		level = EnumUpgrades.safeValueOf(compound.getString("level"));
@@ -194,5 +185,64 @@ public class TileEntityHeater extends TileEntityUpgradeable implements ITickable
 			return true;
 		}
 		return false;
+	}
+
+	public void pushSteam() {
+		ArrayList<BlockPos> blocksVisited = new ArrayList<BlockPos>();
+		ArrayList<BlockPos> consumers = new ArrayList<BlockPos>();
+		
+		steamPushRecursive(blocksVisited, consumers, pos);
+		
+		for(BlockPos consumerPos : consumers) {
+			if(world.getTileEntity(consumerPos) instanceof ISteamConsumer) {
+				if(steam >= ((ISteamConsumer)world.getTileEntity(consumerPos)).getSteamUsedPerTick()) {
+					steam = steam - ((ISteamConsumer)world.getTileEntity(consumerPos)).getSteamUsedPerTick();
+					((ISteamConsumer)world.getTileEntity(consumerPos)).setSteamAccess(true);
+				}
+			}
+		}
+		if(world.getTileEntity(pos.up()) instanceof ISteamConsumer) {
+			if(steam >= ((ISteamConsumer)world.getTileEntity(pos.up())).getSteamUsedPerTick()) {
+				steam = steam - ((ISteamConsumer)world.getTileEntity(pos.up())).getSteamUsedPerTick();
+				((ISteamConsumer)world.getTileEntity(pos.up())).setSteamAccess(true);
+			}
+		}
+	}
+	
+	private void steamPushRecursive(ArrayList<BlockPos> blocksVisited, ArrayList<BlockPos> consumers, BlockPos currentPos) {
+		BlockPos down = currentPos.down();
+		BlockPos up = currentPos.up();
+		BlockPos north = currentPos.north();
+		BlockPos south = currentPos.south();
+		BlockPos east = currentPos.east();
+		BlockPos west = currentPos.west();
+		ArrayList<BlockPos> directions = new ArrayList<BlockPos>();
+		directions.add(down); 
+		directions.add(up); 
+		directions.add(north); 
+		directions.add(south); 
+		directions.add(east); 
+		directions.add(west);
+		
+		blocksVisited.add(currentPos);
+		
+		for(BlockPos direction : directions) {
+			if(!blocksVisited.contains(direction) && world.getBlockState(direction).getBlock() instanceof BlockSteamPipe) {
+				steamPushRecursive(blocksVisited, consumers, direction);
+			} else if(!blocksVisited.contains(direction) && world.getTileEntity(direction) instanceof ISteamConsumer) {
+				EnumFacing blockDirection = (direction == down) ? EnumFacing.DOWN : (direction == up) ? EnumFacing.UP : (direction == north) ? EnumFacing.NORTH : 
+					(direction == south) ? EnumFacing.SOUTH  : (direction == east) ? EnumFacing.EAST  : (direction == west) ? EnumFacing.WEST : EnumFacing.UP;
+				
+				if(((ISteam)world.getTileEntity(direction)).canConnectOnSide(blockDirection.getOpposite())) {
+					consumers.add(direction);
+				}
+			}
+		}
+		
+	}
+
+	@Override
+	public boolean canConnectOnSide(EnumFacing side) {
+		return true;
 	}
 }

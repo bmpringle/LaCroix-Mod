@@ -20,8 +20,10 @@ item.melongrapefruitlacroix.name=Melon Grapefruit La Croix
 item.strawberrylacroix.name=Strawberry La Croix
 item.kiwiwatermelonlacroix.name=Kiwi Watermelon La Croix
 item.lemonlacroix.name=Lemon La Croix
-item.advancedupgrade.name=Advnaced Upgrade
+item.advancedupgrade.name=Advanced Upgrade
 item.excellentupgrade.name=Excellent Upgrade
 item.perfectupgrade.name=Perfect Upgrade
 
 tile.coalheater.name=Coal Heater
+tile.steamturbine.name=Steam Turbine
+tile.steampipe.name=Steam Pipe

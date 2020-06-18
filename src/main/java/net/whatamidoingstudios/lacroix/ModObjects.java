@@ -1,12 +1,16 @@
 package net.whatamidoingstudios.lacroix;
 
+import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.whatamidoingstudios.lacroix.block.heater.BlockHeater;
-import net.whatamidoingstudios.lacroix.item.ItemAdvancedUpgrade;
-import net.whatamidoingstudios.lacroix.item.ItemBlockHeater;
-import net.whatamidoingstudios.lacroix.item.ItemExcellentUpgrade;
-import net.whatamidoingstudios.lacroix.item.ItemLaCroixDrink;
-import net.whatamidoingstudios.lacroix.item.ItemPerfectUpgrade;
+import net.whatamidoingstudios.lacroix.block.pipes.BlockSteamPipe;
+import net.whatamidoingstudios.lacroix.block.steamturbine.BlockSteamTurbine;
+import net.whatamidoingstudios.lacroix.item.food.ItemLaCroixDrink;
+import net.whatamidoingstudios.lacroix.item.itemblocks.ItemBlockHeater;
+import net.whatamidoingstudios.lacroix.item.itemblocks.ItemBlockSteamTurbine;
+import net.whatamidoingstudios.lacroix.item.upgrades.ItemAdvancedUpgrade;
+import net.whatamidoingstudios.lacroix.item.upgrades.ItemExcellentUpgrade;
+import net.whatamidoingstudios.lacroix.item.upgrades.ItemPerfectUpgrade;
 
 @ObjectHolder("lacroix")
 public class ModObjects {
@@ -88,6 +92,18 @@ public class ModObjects {
 	@ObjectHolder("coalheater")
 	public static final ItemBlockHeater itemblock_coalheater = null;
 	
+	@ObjectHolder("steamturbine")
+	public static final ItemBlockSteamTurbine itemblock_steamturbine = null;
+	
+	@ObjectHolder("steampipe")
+	public static final ItemBlock itemblock_steampipe = null;
+	
 	@ObjectHolder("coalheater")
 	public static final BlockHeater coalheater = null;
+	
+	@ObjectHolder("steamturbine")
+	public static final BlockSteamTurbine steamturbine = null;
+	
+	@ObjectHolder("steampipe")
+	public static final BlockSteamPipe steampipe = null;
 }

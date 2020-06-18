@@ -1,0 +1,20 @@
+{
+    "variants": {
+        "facing=north,texture=0": { "model": "lacroix:basic/steamturbine"},
+        "facing=south,texture=0": { "model": "lacroix:basic/steamturbine", "y": 180},
+        "facing=east,texture=0": { "model": "lacroix:basic/steamturbine", "y": 90},
+        "facing=west,texture=0": { "model": "lacroix:basic/steamturbine", "y": 270},
+        "facing=north,texture=1": { "model": "lacroix:basic/steamturbine"},
+        "facing=south,texture=1": { "model": "lacroix:basic/steamturbine", "y": 180},
+        "facing=east,texture=1": { "model": "lacroix:basic/steamturbine", "y": 90},
+        "facing=west,texture=1": { "model": "lacroix:basic/steamturbine", "y": 270},
+        "facing=north,texture=2": { "model": "lacroix:basic/steamturbine"},
+        "facing=south,texture=2": { "model": "lacroix:basic/steamturbine", "y": 180},
+        "facing=east,texture=2": { "model": "lacroix:basic/steamturbine", "y": 90},
+        "facing=west,texture=2": { "model": "lacroix:basic/steamturbine", "y": 270},
+        "facing=north,texture=3": { "model": "lacroix:basic/steamturbine"},
+        "facing=south,texture=3": { "model": "lacroix:basic/steamturbine", "y": 180},
+        "facing=east,texture=3": { "model": "lacroix:basic/steamturbine", "y": 90},
+        "facing=west,texture=3": { "model": "lacroix:basic/steamturbine", "y": 270}       
+    }
+}
