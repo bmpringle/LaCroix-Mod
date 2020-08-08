@@ -20,3 +20,17 @@ build
 # other
 eclipse
 run
+
+
+#Dev Ignore
+.DS_STORE
+CREDITS.txt
+LICENSE-Paulscode\ IBXM\ Library.txt
+LICENSE-Paulscode\ SoundSystem\ CodecIBXM.txt
+LICENSE.txt
+README.txt
+build.gradle
+forge-1.12.2-14.23.5.2784-changelog.txt
+gradle.properties
+gradlew
+gradlew.bat
