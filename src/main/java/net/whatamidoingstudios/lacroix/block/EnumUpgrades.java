@@ -21,6 +21,21 @@ public enum EnumUpgrades {
 		}
 	}
 	
+	public static EnumUpgrades enumFromInt(int _enum) {
+		switch(_enum) {
+		case 0:
+			return Basic;
+		case 1:
+			return Advanced;
+		case 2:
+			return Excellent;
+		case 3:
+			return Perfect;
+		default:
+			return Basic;		
+		}
+	}
+	
 	public static String colorOf(String arg0, EnumUpgrades arg1) {
 		String prepend = "§";
 		switch(arg1) {

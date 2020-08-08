@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "lacroix:blocks/advanced/cannertop",
+        "up": "lacroix:blocks/advanced/cannertop",
+        "down": "lacroix:blocks/advanced/cannerbottom",
+        "north": "lacroix:blocks/advanced/cannerfront",
+        "south": "lacroix:blocks/advanced/cannerback",
+        "east": "lacroix:blocks/advanced/cannerside",
+        "west": "lacroix:blocks/advanced/cannerside"
+    }
+}

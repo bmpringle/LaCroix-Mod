@@ -23,14 +23,16 @@ public class ItemAdvancedUpgrade extends Item {
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand,
 			EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if(player.getHeldItem(hand).getItem() == this) {
-			TileEntity te = worldIn.getTileEntity(pos);
-			if(te instanceof TileEntityUpgradeable) {
-				if(((TileEntityUpgradeable)te).upgrade(EnumUpgrades.Advanced)) {
-					player.getHeldItem(hand).shrink(1);
-					return EnumActionResult.SUCCESS;
-				}else {
-					return EnumActionResult.FAIL;
+		if(!worldIn.isRemote) {
+			if(player.getHeldItem(hand).getItem() == this) {
+				TileEntity te = worldIn.getTileEntity(pos);
+				if(te instanceof TileEntityUpgradeable) {
+					if(((TileEntityUpgradeable)te).upgrade(EnumUpgrades.Advanced)) {
+						player.getHeldItem(hand).shrink(1);
+						return EnumActionResult.SUCCESS;
+					}else {
+						return EnumActionResult.FAIL;
+					}
 				}
 			}
 		}

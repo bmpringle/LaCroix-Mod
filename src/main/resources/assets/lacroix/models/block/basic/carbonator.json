@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "lacroix:blocks/basic/carbonatortop",
+        "up": "lacroix:blocks/basic/carbonatortop",
+        "down": "lacroix:blocks/basic/carbonatorbottom",
+        "north": "lacroix:blocks/basic/carbonatorfront",
+        "south": "lacroix:blocks/basic/carbonatorback",
+        "east": "lacroix:blocks/basic/carbonatorside",
+        "west": "lacroix:blocks/basic/carbonatorside"
+    }
+}

@@ -1,5 +1,7 @@
 package net.whatamidoingstudios.lacroix.block.steamturbine;
 
+import java.util.Hashtable;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.block.state.IBlockState;
@@ -25,7 +27,7 @@ public class TileEntityTurbine extends TileEntityUpgradeable implements ITickabl
 	
 	
 	private int capacity = 20000;
-	private EnergyStorageUpgradeable energyStorage = new EnergyStorageUpgradeable(capacity, capacity/100, capacity/100, 0);
+	private EnergyStorageUpgradeable energyStorage = new EnergyStorageUpgradeable(capacity, capacity, capacity, 0);
 	private boolean hasSteamAccess = false;
 	private int steamUsedPerTick = 1;
 	
@@ -88,7 +90,7 @@ public class TileEntityTurbine extends TileEntityUpgradeable implements ITickabl
 			break;
 		
 		}
-		energyStorage = new EnergyStorageUpgradeable(capacity, capacity/100, capacity/100, 0);
+		energyStorage = new EnergyStorageUpgradeable(capacity, capacity, capacity, 0);
 		energyStorage.setEnergy(compound.getInteger("energy"));
 		super.readFromNBT(compound);
 	}
@@ -131,7 +133,7 @@ public class TileEntityTurbine extends TileEntityUpgradeable implements ITickabl
 				break;
 			
 			}
-			energyStorage = new EnergyStorageUpgradeable(capacity, capacity/100, capacity/100, energyStorage.getEnergyStored());
+			energyStorage = new EnergyStorageUpgradeable(capacity, capacity, capacity, energyStorage.getEnergyStored());
 			return true;
 		}
 		return false;
@@ -163,9 +165,40 @@ public class TileEntityTurbine extends TileEntityUpgradeable implements ITickabl
 			
 			}
 			energyStorage.increaseCapacity(capacity);
+
 			if(hasSteamAccess) {				
 				energyStorage.receiveEnergy((currentLevel+1)*125, false);
-				hasSteamAccess = false;
+			}
+			
+			Hashtable<BlockPos, EnumFacing> consumers = new Hashtable<BlockPos, EnumFacing>();
+			
+			if(world.getTileEntity(pos.up()) != null ? world.getTileEntity(pos.up()).hasCapability(CapabilityEnergy.ENERGY, EnumFacing.DOWN) : false) {
+				consumers.put(pos.up(), EnumFacing.DOWN);
+			}
+			if(world.getTileEntity(pos.down()) != null ? world.getTileEntity(pos.down()).hasCapability(CapabilityEnergy.ENERGY, EnumFacing.UP) : false) {
+				consumers.put(pos.down(), EnumFacing.UP);
+			}
+			if(world.getTileEntity(pos.north()) != null ? world.getTileEntity(pos.north()).hasCapability(CapabilityEnergy.ENERGY, EnumFacing.SOUTH) : false) {
+				consumers.put(pos.north(), EnumFacing.SOUTH);
+			}
+			if(world.getTileEntity(pos.south()) != null ? world.getTileEntity(pos.south()).hasCapability(CapabilityEnergy.ENERGY, EnumFacing.NORTH) : false) {
+				consumers.put(pos.south(), EnumFacing.NORTH);
+			}
+			if(world.getTileEntity(pos.east()) != null ? world.getTileEntity(pos.east()).hasCapability(CapabilityEnergy.ENERGY, EnumFacing.WEST) : false) {
+				consumers.put(pos.east(), EnumFacing.WEST);
+			}
+			if(world.getTileEntity(pos.west()) != null ? world.getTileEntity(pos.west()).hasCapability(CapabilityEnergy.ENERGY, EnumFacing.EAST) : false) {
+				consumers.put(pos.west(), EnumFacing.EAST);
+			}
+			
+			int ePerO = (consumers.size() > 0) ? energyStorage.getEnergyStored()/consumers.size() : 0;
+						
+			for(BlockPos output : consumers.keySet()) {
+				energyStorage.extractEnergy((world.getTileEntity(output)).getCapability(CapabilityEnergy.ENERGY, consumers.get(output)).receiveEnergy(ePerO, false), false);
+			}
+			
+			for(BlockPos output : consumers.keySet()) {
+				energyStorage.extractEnergy((world.getTileEntity(output)).getCapability(CapabilityEnergy.ENERGY, consumers.get(output)).receiveEnergy(energyStorage.getEnergyStored(), false), false);
 			}
 		}
 		save();
@@ -187,5 +220,10 @@ public class TileEntityTurbine extends TileEntityUpgradeable implements ITickabl
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public boolean hasSteam() {
+		return hasSteamAccess;
 	}
 }

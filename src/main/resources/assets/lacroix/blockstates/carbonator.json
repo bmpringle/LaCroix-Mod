@@ -1,0 +1,20 @@
+{
+    "variants": {
+        "facing=north,texture=0": { "model": "lacroix:basic/carbonator"},
+        "facing=south,texture=0": { "model": "lacroix:basic/carbonator", "y": 180},
+        "facing=east,texture=0": { "model": "lacroix:basic/carbonator", "y": 90},
+        "facing=west,texture=0": { "model": "lacroix:basic/carbonator", "y": 270},
+        "facing=north,texture=1": { "model": "lacroix:advanced/carbonator"},
+        "facing=south,texture=1": { "model": "lacroix:advanced/carbonator", "y": 180},
+        "facing=east,texture=1": { "model": "lacroix:advanced/carbonator", "y": 90},
+        "facing=west,texture=1": { "model": "lacroix:advanced/carbonator", "y": 270},
+        "facing=north,texture=2": { "model": "lacroix:excellent/carbonator"},
+        "facing=south,texture=2": { "model": "lacroix:excellent/carbonator", "y": 180},
+        "facing=east,texture=2": { "model": "lacroix:excellent/carbonator", "y": 90},
+        "facing=west,texture=2": { "model": "lacroix:excellent/carbonator", "y": 270},
+        "facing=north,texture=3": { "model": "lacroix:perfect/carbonator"},
+        "facing=south,texture=3": { "model": "lacroix:perfect/carbonator", "y": 180},
+        "facing=east,texture=3": { "model": "lacroix:perfect/carbonator", "y": 90},
+        "facing=west,texture=3": { "model": "lacroix:perfect/carbonator", "y": 270}
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "lacroix:blocks/perfect/cannertop",
+        "up": "lacroix:blocks/perfect/cannertop",
+        "down": "lacroix:blocks/perfect/cannerbottom",
+        "north": "lacroix:blocks/perfect/cannerfront",
+        "south": "lacroix:blocks/perfect/cannerback",
+        "east": "lacroix:blocks/perfect/cannerside",
+        "west": "lacroix:blocks/perfect/cannerside"
+    }
+}

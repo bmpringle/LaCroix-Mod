@@ -1,0 +1,20 @@
+{
+    "variants": {
+        "facing=north,texture=0": { "model": "lacroix:basic/canner"},
+        "facing=south,texture=0": { "model": "lacroix:basic/canner", "y": 180},
+        "facing=east,texture=0": { "model": "lacroix:basic/canner", "y": 90},
+        "facing=west,texture=0": { "model": "lacroix:basic/canner", "y": 270},
+        "facing=north,texture=1": { "model": "lacroix:advanced/canner"},
+        "facing=south,texture=1": { "model": "lacroix:advanced/canner", "y": 180},
+        "facing=east,texture=1": { "model": "lacroix:advanced/canner", "y": 90},
+        "facing=west,texture=1": { "model": "lacroix:advanced/canner", "y": 270},
+        "facing=north,texture=2": { "model": "lacroix:excellent/canner"},
+        "facing=south,texture=2": { "model": "lacroix:excellent/canner", "y": 180},
+        "facing=east,texture=2": { "model": "lacroix:excellent/canner", "y": 90},
+        "facing=west,texture=2": { "model": "lacroix:excellent/canner", "y": 270},
+        "facing=north,texture=3": { "model": "lacroix:perfect/canner"},
+        "facing=south,texture=3": { "model": "lacroix:perfect/canner", "y": 180},
+        "facing=east,texture=3": { "model": "lacroix:perfect/canner", "y": 90},
+        "facing=west,texture=3": { "model": "lacroix:perfect/canner", "y": 270}
+    }
+}

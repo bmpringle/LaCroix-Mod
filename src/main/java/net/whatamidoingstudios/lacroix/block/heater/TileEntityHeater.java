@@ -45,6 +45,8 @@ public class TileEntityHeater extends TileEntityUpgradeable implements ITickable
 	public boolean captureSteam = true;
 	public int steamMaxStorage = 10000;
 	
+	private ArrayList<BlockPos> previousArray = new ArrayList<BlockPos>();
+	
 	public void save() {
 		world.markBlockRangeForRenderUpdate(pos, pos);
 		world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
@@ -107,6 +109,12 @@ public class TileEntityHeater extends TileEntityUpgradeable implements ITickable
 			if(!captureSteam && steam > 0) {
 				LaCroix.networkHandler.channel.sendToDimension(new HeaterMessageClient(pos), world.provider.getDimension());
 				pushSteam();
+			}else {
+				for(BlockPos consumer : previousArray) {
+					if(world.getTileEntity(consumer) != null ? world.getTileEntity(consumer) instanceof ISteamConsumer : false) {
+						((ISteamConsumer)world.getTileEntity(consumer)).setSteamAccess(false);
+					}
+				}
 			}
 		}
 		save();
@@ -193,11 +201,21 @@ public class TileEntityHeater extends TileEntityUpgradeable implements ITickable
 		
 		steamPushRecursive(blocksVisited, consumers, pos);
 		
+		if(consumers.size() == 0) {
+			if(!(world.getTileEntity(pos.up()) instanceof ISteamConsumer)) {
+				steam = steam -1;
+			}
+		}
+		
 		for(BlockPos consumerPos : consumers) {
 			if(world.getTileEntity(consumerPos) instanceof ISteamConsumer) {
 				if(steam >= ((ISteamConsumer)world.getTileEntity(consumerPos)).getSteamUsedPerTick()) {
 					steam = steam - ((ISteamConsumer)world.getTileEntity(consumerPos)).getSteamUsedPerTick();
 					((ISteamConsumer)world.getTileEntity(consumerPos)).setSteamAccess(true);
+					previousArray.add(consumerPos);
+				}else {
+					((ISteamConsumer)world.getTileEntity(consumerPos)).setSteamAccess(false);
+					previousArray.remove(consumerPos);
 				}
 			}
 		}
@@ -205,8 +223,22 @@ public class TileEntityHeater extends TileEntityUpgradeable implements ITickable
 			if(steam >= ((ISteamConsumer)world.getTileEntity(pos.up())).getSteamUsedPerTick()) {
 				steam = steam - ((ISteamConsumer)world.getTileEntity(pos.up())).getSteamUsedPerTick();
 				((ISteamConsumer)world.getTileEntity(pos.up())).setSteamAccess(true);
+				previousArray.add(pos.up());
+			}else {
+				((ISteamConsumer)world.getTileEntity(pos.up())).setSteamAccess(false);
+				previousArray.remove(pos.up());
 			}
 		}
+		for(BlockPos previousConsumer : previousArray) {
+			if(!consumers.contains(previousConsumer)) {
+				if(world.getTileEntity(previousConsumer) != null) {
+					if(world.getTileEntity(previousConsumer) instanceof ISteamConsumer) {
+						((ISteamConsumer)world.getTileEntity(previousConsumer)).setSteamAccess(false);
+					}
+				}
+			}
+		}
+		
 	}
 	
 	private void steamPushRecursive(ArrayList<BlockPos> blocksVisited, ArrayList<BlockPos> consumers, BlockPos currentPos) {
@@ -244,5 +276,10 @@ public class TileEntityHeater extends TileEntityUpgradeable implements ITickable
 	@Override
 	public boolean canConnectOnSide(EnumFacing side) {
 		return true;
+	}
+	
+	@Override
+	public boolean hasSteam() {
+		return steam > 0;
 	}
 }

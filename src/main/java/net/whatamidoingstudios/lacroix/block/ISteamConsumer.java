@@ -6,3 +6,4 @@ public interface ISteamConsumer extends ISteam {
 	public void setSteamAccess(boolean hasSteamAccess);
 	public int getSteamUsedPerTick();
 }
+  
