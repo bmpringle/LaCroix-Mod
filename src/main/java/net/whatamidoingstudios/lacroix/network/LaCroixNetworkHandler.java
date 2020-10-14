@@ -15,6 +15,10 @@ import net.whatamidoingstudios.lacroix.network.heater.HeaterMessageServerRespons
 import net.whatamidoingstudios.lacroix.network.heater.HeaterMessageServerResponseHandler;
 import net.whatamidoingstudios.lacroix.network.heater.ProgressBar;
 import net.whatamidoingstudios.lacroix.network.heater.ProgressBarHandler;
+import net.whatamidoingstudios.lacroix.network.pipe.PipeMessage;
+import net.whatamidoingstudios.lacroix.network.pipe.PipeMessageHandler;
+import net.whatamidoingstudios.lacroix.network.pipe.PipeMessageReturn;
+import net.whatamidoingstudios.lacroix.network.pipe.PipeMessageReturnHandler;
 
 public class LaCroixNetworkHandler {
 	public SimpleNetworkWrapper channel;
@@ -27,5 +31,7 @@ public class LaCroixNetworkHandler {
 		channel.registerMessage(ProgressBarHandler.class, ProgressBar.class, 3, Side.CLIENT);
 		channel.registerMessage(CarbonatorDataMessageHandler.class, CarbonatorDataMessage.class, 4, Side.CLIENT);
 		channel.registerMessage(CannerMessageHandler.class, CannerMessage.class, 5, Side.CLIENT);
+		channel.registerMessage(PipeMessageHandler.class, PipeMessage.class, 6, Side.CLIENT);
+		channel.registerMessage(PipeMessageReturnHandler.class, PipeMessageReturn.class, 7, Side.SERVER);
 	}
 }

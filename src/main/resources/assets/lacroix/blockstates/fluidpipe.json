@@ -1,23 +1,113 @@
 {
     "multipart": [
-        {   "apply": { "model": "lacroix:pipes/fluidpipebase" }},
-        {   "when": { "north": "true" },
+        {   "when": { "north": "true", "northio": "0" },
             "apply": { "model": "lacroix:pipes/fluidpipeconnector", "uvlock": true }
         },
-        {   "when": { "east": "true" },
+        {   "when": { "north": "true", "northio": "1" },
+            "apply": { "model": "lacroix:pipes/fluidpipeconnectoroutput", "uvlock": true }
+        },
+        {   "when": { "north": "true", "northio": "2" },
+            "apply": { "model": "lacroix:pipes/fluidpipeconnectorinput", "uvlock": true }
+        },
+        {   "when": { "east": "true", "eastio": "0" },
             "apply": { "model": "lacroix:pipes/fluidpipeconnector", "y": 90, "uvlock": true }
         },
-        {   "when": { "south": "true" },
+        {   "when": { "east": "true", "eastio": "1" },
+            "apply": { "model": "lacroix:pipes/fluidpipeconnectoroutput", "y": 90, "uvlock": true }
+        },
+        {   "when": { "east": "true", "eastio": "2" },
+            "apply": { "model": "lacroix:pipes/fluidpipeconnectorinput", "y": 90, "uvlock": true }
+        },  
+        {   "when": { "south": "true", "southio": "0" },
             "apply": { "model": "lacroix:pipes/fluidpipeconnector", "y": 180, "uvlock": true }
         },
-        {   "when": { "west": "true" },
+        {   "when": { "south": "true", "southio": "1" },
+            "apply": { "model": "lacroix:pipes/fluidpipeconnectoroutput", "y": 180, "uvlock": true }
+        },
+        {   "when": { "south": "true", "southio": "2" },
+            "apply": { "model": "lacroix:pipes/fluidpipeconnectorinput", "y": 180, "uvlock": true }
+        }, 
+        {   "when": { "west": "true", "westio": "0" },
             "apply": { "model": "lacroix:pipes/fluidpipeconnector", "y": 270, "uvlock": true }
         },
-        {   "when": { "up": "true" },
+        {   "when": { "west": "true", "westio": "1" },
+            "apply": { "model": "lacroix:pipes/fluidpipeconnectoroutput", "y": 270, "uvlock": true }
+        },
+        {   "when": { "west": "true", "westio": "2" },
+            "apply": { "model": "lacroix:pipes/fluidpipeconnectorinput", "y": 270, "uvlock": true }
+        },  
+        {   "when": { "up": "true", "upio": "0" },
             "apply": { "model": "lacroix:pipes/fluidpipeconnector", "x": -90, "uvlock": true }
         },
-        {   "when": { "down": "true" },
+        {   "when": { "up": "true", "upio": "1" },
+            "apply": { "model": "lacroix:pipes/fluidpipeconnectoroutput", "x": -90, "uvlock": true }
+        },
+        {   "when": { "up": "true", "upio": "2" },
+            "apply": { "model": "lacroix:pipes/fluidpipeconnectorinput", "x": -90, "uvlock": true }
+        },   
+        {   "when": { "down": "true", "downio": "0" },
             "apply": { "model": "lacroix:pipes/fluidpipeconnector", "x": 90, "uvlock": true }
+        },
+        {   "when": { "down": "true", "downio": "1" },
+            "apply": { "model": "lacroix:pipes/fluidpipeconnectoroutput", "x": 90, "uvlock": true }
+        },
+        {   "when": { "down": "true", "downio": "2" },
+            "apply": { "model": "lacroix:pipes/fluidpipeconnectorinput", "x": 90, "uvlock": true }
+        },
+        
+        {   "when": { "north": "false", "northio": "0" },
+            "apply": { "model": "lacroix:pipes/fluidpipebase", "uvlock": true }
+        },
+        {   "when": { "north": "false", "northio": "1" },
+            "apply": { "model": "lacroix:pipes/fluidpipebaseoutput", "uvlock": true }
+        },
+        {   "when": { "north": "false", "northio": "2" },
+            "apply": { "model": "lacroix:pipes/fluidpipebaseinput", "uvlock": true }
+        },
+        {   "when": { "east": "false", "eastio": "0" },
+            "apply": { "model": "lacroix:pipes/fluidpipebase", "y": 90, "uvlock": true }
+        },
+        {   "when": { "east": "false", "eastio": "1" },
+            "apply": { "model": "lacroix:pipes/fluidpipebaseoutput", "y": 90, "uvlock": true }
+        },
+        {   "when": { "east": "false", "eastio": "2" },
+            "apply": { "model": "lacroix:pipes/fluidpipebaseinput", "y": 90, "uvlock": true }
+        },  
+        {   "when": { "south": "false", "southio": "0" },
+            "apply": { "model": "lacroix:pipes/fluidpipebase", "y": 180, "uvlock": true }
+        },
+        {   "when": { "south": "false", "southio": "1" },
+            "apply": { "model": "lacroix:pipes/fluidpipebaseoutput", "y": 180, "uvlock": true }
+        },
+        {   "when": { "south": "false", "southio": "2" },
+            "apply": { "model": "lacroix:pipes/fluidpipebaseinput", "y": 180, "uvlock": true }
+        }, 
+        {   "when": { "west": "false", "westio": "0" },
+            "apply": { "model": "lacroix:pipes/fluidpipebase", "y": 270, "uvlock": true }
+        },
+        {   "when": { "west": "false", "westio": "1" },
+            "apply": { "model": "lacroix:pipes/fluidpipebaseoutput", "y": 270, "uvlock": true }
+        },
+        {   "when": { "west": "false", "westio": "2" },
+            "apply": { "model": "lacroix:pipes/fluidpipebaseinput", "y": 270, "uvlock": true }
+        },  
+        {   "when": { "up": "false", "upio": "0" },
+            "apply": { "model": "lacroix:pipes/fluidpipebase", "x": -90, "uvlock": true }
+        },
+        {   "when": { "up": "false", "upio": "1" },
+            "apply": { "model": "lacroix:pipes/fluidpipebaseoutput", "x": -90, "uvlock": true }
+        },
+        {   "when": { "up": "false", "upio": "2" },
+            "apply": { "model": "lacroix:pipes/fluidpipebaseinput", "x": -90, "uvlock": true }
+        },   
+        {   "when": { "down": "false", "downio": "0" },
+            "apply": { "model": "lacroix:pipes/fluidpipebase", "x": 90, "uvlock": true }
+        },
+        {   "when": { "down": "false", "downio": "1" },
+            "apply": { "model": "lacroix:pipes/fluidpipebaseoutput", "x": 90, "uvlock": true }
+        },
+        {   "when": { "down": "false", "downio": "2" },
+            "apply": { "model": "lacroix:pipes/fluidpipebaseinput", "x": 90, "uvlock": true }
         }
     ]
 }

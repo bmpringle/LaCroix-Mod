@@ -1,0 +1,21 @@
+{
+    "parent": "block/block",
+    "textures": {
+        "0": "lacroix:blocks/pipes/fluidpipesideinput",
+        "particle": "lacroix:blocks/pipes/fluidpipesideinput"
+    },
+    "elements": [
+        {
+            "from": [4, 4, 2],
+            "to": [12, 12, 4],
+            "faces": {
+                "north": {"texture": "#0"},
+                "east": {"texture": "#0"},
+                "south": {"texture": "#0"},
+                "west": {"texture": "#0"},
+                "up": {"texture": "#0"},
+                "down": {"texture": "#0"}
+            }
+        }
+    ]
+}

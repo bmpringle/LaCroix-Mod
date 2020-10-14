@@ -15,6 +15,7 @@ public class LaCroixGuiHandler implements IGuiHandler {
 	public static final int STEAMTURBINE = 1;
 	public static final int CARBONATOR = 2;
 	public static final int CANNER = 3;
+	public static final int PIPE = 4;
 	
 	@Override
 	public Container getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -39,6 +40,8 @@ public class LaCroixGuiHandler implements IGuiHandler {
 				return new GuiCarbonator(x, y, z);
 			case CANNER:
 				return new GuiCanner((ContainerCanner)getServerGuiElement(ID, player, world, x, y, z), player.inventory);
+			case PIPE:
+				return new GuiPipe(x, y, z);
 			default:
 				return null;
 		}

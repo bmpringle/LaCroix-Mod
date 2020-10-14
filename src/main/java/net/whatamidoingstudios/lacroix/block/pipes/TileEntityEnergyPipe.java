@@ -11,6 +11,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
+import net.whatamidoingstudios.lacroix.LaCroix;
+import net.whatamidoingstudios.lacroix.network.pipe.PipeMessage;
 
 public class TileEntityEnergyPipe extends TileEntity implements ITickable {
 	
@@ -22,12 +24,12 @@ public class TileEntityEnergyPipe extends TileEntity implements ITickable {
 	 * 2: input
 	 */
 	
-	int TYPE_NORTH = 0;
-	int TYPE_SOUTH = 0;
-	int TYPE_EAST = 0;
-	int TYPE_WEST = 0;
-	int TYPE_UP = 0;
-	int TYPE_DOWN = 0;
+	public int TYPE_NORTH = 0;
+	public int TYPE_SOUTH = 0;
+	public int TYPE_EAST = 0;
+	public int TYPE_WEST = 0;
+	public int TYPE_UP = 0;
+	public int TYPE_DOWN = 0;
 	
 	public void toggleType(EnumFacing facing) {
 		switch(facing) {
@@ -123,7 +125,7 @@ public class TileEntityEnergyPipe extends TileEntity implements ITickable {
 	 */	
 	@Override
 	public void update() {
-		if(!world.isRemote) {
+		if(!world.isRemote) {			
 			ArrayList<BlockPos> outputs = getOutputs();
 			int ePer = (outputs.size() > 0) ? energyStorage.getEnergyStored()/outputs.size() : 0;
 			
@@ -177,6 +179,8 @@ public class TileEntityEnergyPipe extends TileEntity implements ITickable {
 			for(BlockPos output : outputsO.keySet()) {
 				energyStorage.extractEnergy((world.getTileEntity(output)).getCapability(CapabilityEnergy.ENERGY, outputsO.get(output)).receiveEnergy(energyStorage.getEnergyStored(), false), false);
 			}
+			
+			LaCroix.networkHandler.channel.sendToDimension(new PipeMessage(pos, TYPE_UP, TYPE_DOWN, TYPE_NORTH, TYPE_SOUTH, TYPE_EAST, TYPE_WEST), world.provider.getDimension());
 		}
 	}
 

@@ -10,7 +10,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import net.whatamidoingstudios.lacroix.block.heater.TileEntityHeater;
+import net.whatamidoingstudios.lacroix.ModObjects;
+import net.whatamidoingstudios.lacroix.item.food.ItemLaCroixDrink;
 
 public class ContainerCanner extends Container {
 	public BlockPos pos;
@@ -30,6 +31,11 @@ public class ContainerCanner extends Container {
 			public void onSlotChanged() {
 				canner.markDirty();
 			} 
+			
+			@Override
+			public boolean isItemValid(ItemStack stack) {
+				return (stack.getItem() instanceof ItemLaCroixDrink);
+			}
 		});
 	
 		for (int i = 0; i < 3; i++) {

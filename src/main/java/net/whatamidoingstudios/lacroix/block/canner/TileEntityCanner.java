@@ -3,6 +3,7 @@ package net.whatamidoingstudios.lacroix.block.canner;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -36,6 +37,7 @@ public class TileEntityCanner extends TileEntityUpgradeable implements ITickable
 	
 	private EnergyStorageUpgradeable energyStorage = new EnergyStorageUpgradeable(capacity, capacity, capacity, 0);
 	private ItemStackHandler itemHandler = new ItemStackHandler(2) {
+		
 		@Override
 	    protected void onContentsChanged(int slot) {
 	      super.onContentsChanged(slot);
@@ -201,7 +203,6 @@ public class TileEntityCanner extends TileEntityUpgradeable implements ITickable
 				itemHandler.extractItem(0, 1, false);
 				String fluidname = fluidHandler.getFluid().getFluid().getUnlocalizedName().substring(6);
 				String itemname = fluidname.substring(0, fluidname.length()-5)+"lacroix";
-				System.out.println(itemname);
 				itemHandler.insertItem(1, new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(LaCroix.MODID, itemname))), false);
 				fluidHandler.drain(new FluidStack(fluidHandler.getFluid().getFluid(), 500), true);
 			}			

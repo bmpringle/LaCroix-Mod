@@ -14,7 +14,9 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.whatamidoingstudios.lacroix.LaCroix;
 import net.whatamidoingstudios.lacroix.capabilities.FluidTankLaCroix;
+import net.whatamidoingstudios.lacroix.network.pipe.PipeMessage;
 
 public class TileEntityFluidPipe extends TileEntity implements ITickable {
 	
@@ -26,12 +28,12 @@ public class TileEntityFluidPipe extends TileEntity implements ITickable {
 	 * 2: input
 	 */
 	
-	int TYPE_NORTH = 0;
-	int TYPE_SOUTH = 0;
-	int TYPE_EAST = 0;
-	int TYPE_WEST = 0;
-	int TYPE_UP = 0;
-	int TYPE_DOWN = 0;
+	public int TYPE_NORTH = 0;
+	public int TYPE_SOUTH = 0;
+	public int TYPE_EAST = 0;
+	public int TYPE_WEST = 0;
+	public int TYPE_UP = 0;
+	public int TYPE_DOWN = 0;
 	
 	public void toggleType(EnumFacing facing) {
 		switch(facing) {
@@ -215,6 +217,8 @@ public class TileEntityFluidPipe extends TileEntity implements ITickable {
 			for(BlockPos output : outputsO.keySet()) {
 				fluidHandler.drain((world.getTileEntity(output)).getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, outputsO.get(output)).fill(new FluidStack(fluidHandler.getFluid().getFluid(), fluidHandler.getFluidAmount()), true), true);
 			}
+			
+			LaCroix.networkHandler.channel.sendToDimension(new PipeMessage(pos, TYPE_UP, TYPE_DOWN, TYPE_NORTH, TYPE_SOUTH, TYPE_EAST, TYPE_WEST), world.provider.getDimension());
 		}
 	}
 

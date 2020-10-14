@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -33,6 +34,13 @@ public class BlockEnergyPipe extends Block {
 	public static PropertyBool EAST = PropertyBool.create("east");
 	public static PropertyBool WEST = PropertyBool.create("west");
 	
+	public static PropertyInteger DOWNIO = PropertyInteger.create("downio", 0, 2);
+	public static PropertyInteger UPIO = PropertyInteger.create("upio", 0, 2);
+	public static PropertyInteger NORTHIO = PropertyInteger.create("northio", 0, 2);
+	public static PropertyInteger SOUTHIO = PropertyInteger.create("southio", 0, 2);
+	public static PropertyInteger EASTIO = PropertyInteger.create("eastio", 0, 2);
+	public static PropertyInteger WESTIO = PropertyInteger.create("westio", 0, 2);
+	
 	public BlockEnergyPipe() {
 		super(Material.ANVIL);
 		setRegistryName("energypipe");
@@ -41,7 +49,7 @@ public class BlockEnergyPipe extends Block {
 		setHardness(3);
 		setResistance(5);
 		setHarvestLevel("pickaxe", 2);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(DOWN, false).withProperty(UP, false).withProperty(NORTH, false).withProperty(SOUTH, false).withProperty(EAST, false).withProperty(WEST, false));
+		this.setDefaultState(this.blockState.getBaseState().withProperty(DOWN, false).withProperty(UP, false).withProperty(NORTH, false).withProperty(SOUTH, false).withProperty(EAST, false).withProperty(WEST, false).withProperty(UPIO, 0).withProperty(DOWNIO, 0).withProperty(NORTHIO, 0).withProperty(SOUTHIO, 0).withProperty(EASTIO, 0).withProperty(WESTIO, 0));
 	}
 	
 	@Override
@@ -56,7 +64,7 @@ public class BlockEnergyPipe extends Block {
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-	    return new BlockStateContainer(this, new IProperty[] {DOWN, UP, NORTH, SOUTH, EAST, WEST});
+	    return new BlockStateContainer(this, new IProperty[] {DOWN, UP, NORTH, SOUTH, EAST, WEST, DOWNIO, UPIO, NORTHIO, SOUTHIO, EASTIO, WESTIO});
 	}
 
     @Override
@@ -90,6 +98,15 @@ public class BlockEnergyPipe extends Block {
 		}
 		if(worldIn.getTileEntity(pos.west()) != null ? worldIn.getTileEntity(pos.west()).hasCapability(CapabilityEnergy.ENERGY, EnumFacing.EAST) || worldIn.getTileEntity(pos.west()) instanceof TileEntityEnergyPipe : false) {
 			properties.add(WEST);
+		}
+		
+		if(worldIn.getTileEntity(pos) instanceof TileEntityEnergyPipe) {
+			state = state.withProperty(UPIO, ((TileEntityEnergyPipe)worldIn.getTileEntity(pos)).TYPE_UP);
+			state = state.withProperty(DOWNIO, ((TileEntityEnergyPipe)worldIn.getTileEntity(pos)).TYPE_DOWN);
+			state = state.withProperty(NORTHIO, ((TileEntityEnergyPipe)worldIn.getTileEntity(pos)).TYPE_NORTH);
+			state = state.withProperty(SOUTHIO, ((TileEntityEnergyPipe)worldIn.getTileEntity(pos)).TYPE_SOUTH);
+			state = state.withProperty(EASTIO, ((TileEntityEnergyPipe)worldIn.getTileEntity(pos)).TYPE_EAST);
+			state = state.withProperty(WESTIO, ((TileEntityEnergyPipe)worldIn.getTileEntity(pos)).TYPE_WEST);
 		}
 		
 		for(IProperty property : properties) {
